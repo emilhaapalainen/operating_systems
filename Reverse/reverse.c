@@ -1,32 +1,88 @@
+/*
+Help sources:
+    - Malloc man pages -> realloc
+    - Pointers and pointers of pointers: https://www.tutorialspoint.com/cprogramming/c_pointers.htm
+    - File operations: https://users.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html
+    - 
+
+*/
+
+
+
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+#define MAX_LENGTH 1024
 
 int main(int argc, char *argv[]) {
     FILE *input = stdin;
     FILE *output = stdout;
-    char line[1024];
+    char line[MAX_LENGTH];
     char **lines = NULL;
     int lineCount = 0;
+    int i;
 
-    //Check if no arguments given
+    //Check if no arguments given, read from stdin, write to stdout
     if (argc == 1) {
-        fprintf(stderr, "No arguments given, at least input file expected. Usage ./reverse {input.txt} {output.txt}\n");
-        return 1;
+        while (fgets(line, MAX_LENGTH, stdin)) {
+            line[strcspn(line, "\n")] = 0;                          //Removing newline char from each line
+
+            //Dynamic memory allocation to lines which increases the size each line
+            lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+            if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
+                fprintf(stderr, "Memory allocation failure.\n");
+                exit(1);
+            }
+            lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
+            if (lines[lineCount] == NULL) {
+                fprintf(stderr, "Memory allocation failure");       //if lines is NULL, strdup malloc failed => exit(1)
+                exit(1);
+            }
+            lineCount++;
+        }
+        //Printing lines from bottom to top
+        for (i = lineCount - 1; i >= 0; i--) {
+            puts(lines[i]);
+            free(lines[i]);                                         //Free used lines after done
+        }
+        free(lines);                                                //Free array
+    }   else if (argc == 2) {
+        //Input file provided, use that instead of stdin
+            input = fopen(argv[1], "r");
+            if (input == NULL) {                                    //Check if input file was opened
+                fprintf(stderr, "Error opening input file.");
+                exit(1);
+            }
+            while (fgets(line, MAX_LENGTH, input)) {
+                line[strcspn(line, "\n")] = 0;                          //Removing newline char from each line
+
+                //Dynamic memory allocation to lines which increases the size each line
+                lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+                if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
+                    fprintf(stderr, "Memory allocation failure.\n");
+                    exit(1);
+                }
+                lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
+                if (lines[lineCount] == NULL) {
+                    fprintf(stderr, "Memory allocation failure");       //if lines is NULL, strdup malloc failed => exit(1)
+                    exit(1);
+                }
+                lineCount++;
+        }
+        //Printing lines from bottom to top
+        for (i = lineCount - 1; i >= 0; i--) {
+            puts(lines[i]);
+            free(lines[i]);                                         //Free used lines after done
+        }
+        free(lines);
+        fclose(input);
     }
 
     //Check for too many arguments
     if (argc > 3) {
-        fprintf(stderr, "Too many arguments given. Usage ./reverse {input.txt} {output.txt}\n");
-        return 1;
-    }
-
-    //Handle input file opening
-    if (argc == 2) {
-        input = fopen(argv[1], "r");
-        if (input == NULL) {
-            perror("Error opening input file.");
-            return 1;
-        }
+        fprintf(stderr, "Too many arguments given. Usage ./reverse <input.txt> <output.txt>\n");
+        exit(1);
     }
 
     //Handle output file opening
@@ -34,11 +90,34 @@ int main(int argc, char *argv[]) {
         input = fopen(argv[1], "r");
         output = fopen(argv[2], "w");
         if (output == NULL) {
-            perror("Error opening output file.");
+            fprintf(stderr, "Error opening output file.");
             fclose(input);
-            return 1;
+            exit(1);
         }
-    }
+        while (fgets(line, MAX_LENGTH, input)) {
+                line[strcspn(line, "\n")] = 0;                          //Removing newline char from each line
 
+                //Dynamic memory allocation to lines which increases the size each line
+                lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+                if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
+                    fprintf(stderr, "Memory allocation failure.\n");
+                    exit(1);
+                }
+                lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
+                if (lines[lineCount] == NULL) {
+                    fprintf(stderr, "Memory allocation failure");       //if lines is NULL, strdup malloc failed => exit(1)
+                    exit(1);
+                }
+                lineCount++;
+        }
+        //Printing lines from bottom to top
+        for (i = lineCount - 1; i >= 0; i--) {
+            fprintf(output, "%s\n", lines[i]);                          //Write to file instead of stdout
+            free(lines[i]);                                             //Free used lines after done
+        }
+        free(lines);
+        fclose(input);
+        fclose(output);
+    }
 
 }
