@@ -21,38 +21,44 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_LENGTH 1024
-
 int main(int argc, char *argv[])
 {
     FILE *input = stdin;
     FILE *output = stdout;
-    char line[MAX_LENGTH];
+    char *line = NULL;
     char **lines = NULL;
+    size_t lineSize = 0;
+    int ch;
     int lineCount = 0;
     int i;
 
     // Check if no arguments given, read from stdin, write to stdout
     if (argc == 1)
     {
-        while (fgets(line, MAX_LENGTH, stdin))
+        while ((ch = fgetc(stdin)) != EOF)
         {
-            line[strcspn(line, "\n")] = 0; // Removing newline char from each line
-
-            // Dynamic memory allocation to lines which increases the size each line
-            lines = realloc(lines, (lineCount + 1) * sizeof(char *));
-            if (lines == NULL)
+            line = realloc(line, lineSize + 1);
+            if (line == NULL)
             { // If lines is NULL, malloc failed => exit(1)
-                fprintf(stderr, "Memory allocation failure\n");
+                fprintf(stderr, "malloc failed\n");
                 exit(1);
             }
-            lines[lineCount] = strdup(line); // Returns pointer to new duplicated string
-            if (lines[lineCount] == NULL)
-            {
-                fprintf(stderr, "Memory allocation failure"); // if lines is NULL, strdup malloc failed => exit(1)
-                exit(1);
+            line[lineSize++] = ch;
+
+            if (ch == '\n') {
+                line[lineSize - 1] = 0; // Removing newline char from each line
+                // Dynamic memory allocation to lines which increases the size each line
+                lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+                if (lines == NULL)
+                { // If lines is NULL, malloc failed => exit(1)
+                    fprintf(stderr, "malloc failed\n");
+                    exit(1);
+                }
+                lines[lineCount] = line; // Returns pointer to new string
+                line = NULL; // Reset line for next use
+                lineSize = 0; // Reset line size for next use
+                lineCount++;
             }
-            lineCount++;
         }
         // Printing lines from bottom to top
         for (i = lineCount - 1; i >= 0; i--)
@@ -61,6 +67,7 @@ int main(int argc, char *argv[])
             free(lines[i]); // Free used lines after done
         }
         free(lines); // Free array
+        free(line); // Free last line
     }
     else if (argc == 2)
     {
@@ -71,24 +78,30 @@ int main(int argc, char *argv[])
             fprintf(stderr, "error: cannot open file '%s'\n", argv[1]);
             exit(1);
         }
-        while (fgets(line, MAX_LENGTH, input))
+        while ((ch = fgetc(input)) != EOF)
         {
-            line[strcspn(line, "\n")] = 0; // Removing newline char from each line
-
-            // Dynamic memory allocation to lines which increases the size each line
-            lines = realloc(lines, (lineCount + 1) * sizeof(char *));
-            if (lines == NULL)
+            line = realloc(line, lineSize + 1);
+            if (line == NULL)
             { // If lines is NULL, malloc failed => exit(1)
-                fprintf(stderr, "Memory allocation failure\n");
+                fprintf(stderr, "malloc failed\n");
                 exit(1);
             }
-            lines[lineCount] = strdup(line); // Returns pointer to new duplicated string
-            if (lines[lineCount] == NULL)
-            {
-                fprintf(stderr, "Memory allocation failure"); // if lines is NULL, strdup malloc failed => exit(1)
-                exit(1);
+            line[lineSize++] = ch;
+
+            if (ch == '\n') {
+                line[lineSize - 1] = 0; // Removing newline char from each line
+                // Dynamic memory allocation to lines which increases the size each line
+                lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+                if (lines == NULL)
+                { // If lines is NULL, malloc failed => exit(1)
+                    fprintf(stderr, "malloc failed\n");
+                    exit(1);
+                }
+                lines[lineCount] = line; // Returns pointer to new string
+                line = NULL; // Reset line for next use
+                lineSize = 0; // Reset line size for next use
+                lineCount++;
             }
-            lineCount++;
         }
         // Printing lines from bottom to top
         for (i = lineCount - 1; i >= 0; i--)
@@ -96,7 +109,8 @@ int main(int argc, char *argv[])
             puts(lines[i]);
             free(lines[i]); // Free used lines after done
         }
-        free(lines);
+        free(lines); // Free array
+        free(line); // Free last line
         fclose(input);
     }
 
@@ -123,24 +137,30 @@ int main(int argc, char *argv[])
             fclose(input);
             exit(1);
         }
-        while (fgets(line, MAX_LENGTH, input))
+        while ((ch = fgetc(input)) != EOF)
         {
-            line[strcspn(line, "\n")] = 0; // Removing newline char from each line
-
-            // Dynamic memory allocation to lines which increases the size each line
-            lines = realloc(lines, (lineCount + 1) * sizeof(char *));
-            if (lines == NULL)
+            line = realloc(line, lineSize + 1);
+            if (line == NULL)
             { // If lines is NULL, malloc failed => exit(1)
-                fprintf(stderr, "Memory allocation failure\n");
+                fprintf(stderr, "malloc failed\n");
                 exit(1);
             }
-            lines[lineCount] = strdup(line); // Returns pointer to new duplicated string
-            if (lines[lineCount] == NULL)
-            {
-                fprintf(stderr, "Memory allocation failure"); // if lines is NULL, strdup malloc failed => exit(1)
-                exit(1);
+            line[lineSize++] = ch;
+
+            if (ch == '\n') {
+                line[lineSize - 1] = 0; // Removing newline char from each line
+                // Dynamic memory allocation to lines which increases the size each line
+                lines = realloc(lines, (lineCount + 1) * sizeof(char *));
+                if (lines == NULL)
+                { // If lines is NULL, malloc failed => exit(1)
+                    fprintf(stderr, "malloc failed\n");
+                    exit(1);
+                }
+                lines[lineCount] = line; // Returns pointer to new string
+                line = NULL; // Reset line for next use
+                lineSize = 0; // Reset line size for next use
+                lineCount++;
             }
-            lineCount++;
         }
         // Printing lines from bottom to top
         for (i = lineCount - 1; i >= 0; i--)
@@ -149,6 +169,7 @@ int main(int argc, char *argv[])
             free(lines[i]);                    // Free used lines after done
         }
         free(lines);
+        free(line);
         fclose(input);
         fclose(output);
     }
