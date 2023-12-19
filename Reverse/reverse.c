@@ -14,7 +14,7 @@
  *    - Pointers and pointers of pointers: https://www.tutorialspoint.com/cprogramming/c_pointers.htm
  *    - File operations: https://users.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html
  *    - LUT C Programming course book
- *
+ *    - dynamic memory allocation: https://www.scaler.com/topics/c/dynamic-memory-allocation-in-c/
  */
 
 #include <stdio.h>
