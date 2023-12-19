@@ -1,14 +1,21 @@
-/*
-Help sources:
-    - man pages
-    - Pointers and pointers of pointers: https://www.tutorialspoint.com/cprogramming/c_pointers.htm
-    - File operations: https://users.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html
-    - 
-
+/* Reverse.c
+* Author: Emil Haapalainen
+*
+* Simple program to reverse the contents of input stream or a file with the ability to write the
+* changes to an output file or print them to the terminal. 
+*
+* Usage:    prompt> ./reverse       (CTRL+D to stop inputting new lines)
+*           prompt> ./reverse input.txt
+*           prompt> ./reverse input.txt output.txt
+*
+*
+* Help sources:
+*    - man pages
+*    - Pointers and pointers of pointers: https://www.tutorialspoint.com/cprogramming/c_pointers.htm
+*    - File operations: https://users.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html
+*    - LUT C Programming course book
+*    
 */
-
-
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -123,5 +130,4 @@ int main(int argc, char *argv[]) {
         fclose(input);
         fclose(output);
     }
-
 }
