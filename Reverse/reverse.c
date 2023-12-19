@@ -1,6 +1,6 @@
 /*
 Help sources:
-    - Malloc man pages -> realloc
+    - man pages
     - Pointers and pointers of pointers: https://www.tutorialspoint.com/cprogramming/c_pointers.htm
     - File operations: https://users.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html
     - 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
             //Dynamic memory allocation to lines which increases the size each line
             lines = realloc(lines, (lineCount + 1) * sizeof(char *));
             if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
-                fprintf(stderr, "Memory allocation failure.\n");
+                fprintf(stderr, "Memory allocation failure\n");
                 exit(1);
             }
             lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         //Input file provided, use that instead of stdin
             input = fopen(argv[1], "r");
             if (input == NULL) {                                    //Check if input file was opened
-                fprintf(stderr, "Error opening input file.");
+                fprintf(stderr, "error: cannot open file '%s'\n", argv[1]);
                 exit(1);
             }
             while (fgets(line, MAX_LENGTH, input)) {
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
                 //Dynamic memory allocation to lines which increases the size each line
                 lines = realloc(lines, (lineCount + 1) * sizeof(char *));
                 if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
-                    fprintf(stderr, "Memory allocation failure.\n");
+                    fprintf(stderr, "Memory allocation failure\n");
                     exit(1);
                 }
                 lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
@@ -81,16 +81,20 @@ int main(int argc, char *argv[]) {
 
     //Check for too many arguments
     if (argc > 3) {
-        fprintf(stderr, "Too many arguments given. Usage ./reverse <input.txt> <output.txt>\n");
+        fprintf(stderr, "usage: reverse <input> <output>\n");
         exit(1);
     }
 
     //Handle output file opening
     if(argc == 3) {
+        if (strcmp(argv[1], argv[2]) == 0) {
+            fprintf(stderr, "Input and output file must differ\n");
+            exit(1);
+        }
         input = fopen(argv[1], "r");
         output = fopen(argv[2], "w");
         if (output == NULL) {
-            fprintf(stderr, "Error opening output file.");
+            fprintf(stderr, "error: cannot open file '%s'\n", argv[2]);
             fclose(input);
             exit(1);
         }
@@ -100,7 +104,7 @@ int main(int argc, char *argv[]) {
                 //Dynamic memory allocation to lines which increases the size each line
                 lines = realloc(lines, (lineCount + 1) * sizeof(char *));
                 if (lines == NULL) {                                    //If lines is NULL, malloc failed => exit(1)
-                    fprintf(stderr, "Memory allocation failure.\n");
+                    fprintf(stderr, "Memory allocation failure\n");
                     exit(1);
                 }
                 lines[lineCount] = strdup(line);                        //Returns pointer to new duplicated string
