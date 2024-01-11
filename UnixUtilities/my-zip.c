@@ -65,4 +65,6 @@ int main(int argc, char *argv[]) {
             zip(input);
             fclose(input);
         }
+        
+    exit(0);
 }
