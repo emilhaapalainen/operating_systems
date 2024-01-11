@@ -43,7 +43,7 @@ void zip(FILE *input) {
 
     // Handle last character
     fwrite(&count, sizeof(int), 1, stdout);
-    fwrite(&previous, sizeof(char), 1, stdout);
+    printf("\n");
 
 }
 
@@ -65,6 +65,6 @@ int main(int argc, char *argv[]) {
             zip(input);
             fclose(input);
         }
-        
+
     exit(0);
 }

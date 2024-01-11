@@ -25,7 +25,6 @@ void unzip(FILE *input) {
             putchar(character);
         }
     }
-    printf("\n");
 }
 
 int main(int argc, char *argv[]) {
