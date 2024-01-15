@@ -13,6 +13,6 @@ https://medium.com/@mahi12/adding-system-call-in-xv6-a5468ce1b463
 
 https://www.geeksforgeeks.org/xv6-operating-system-adding-a-new-system-call/
 
-https://www.youtube.com/watch?v=21SVYiKhcwM&t=314s
+https://www.youtube.com/watch?v=21SVYiKhcwM
 
 https://www.youtube.com/watch?v=vR6z2QGcoo8
