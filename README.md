@@ -42,6 +42,7 @@ Utility to compress files using run-length encoding (RLE)
 n characters of same type in a row converts to number n and single character
 
 aaaaaaaaaabbbb => 10a4b (4-byte integer, 1 element, 5-byte entry)
+
 **Usage**
 ```
 prompt> ./my-zip file1.txt file2.txt ... > file.z
