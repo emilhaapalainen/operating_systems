@@ -8,20 +8,21 @@ Project goal was to add your own system call, **getreadcount()**, which simply r
 The system call returns the value of the **readcount** counter, which is incremented each time a process calls the **read()** system call.
 
 # COMMON ERRORS
-**Permission denied **
-At sign.pl --> 
-´´´
+**Permission denied**
+At sign.pl
+```
 chmod +x sign.pl
-´´´
+```
 At vectors.pl 
-´´´
+```
 chmod +x vectors.pl
-´´´
+```
 **Other**
-´´´
+
+```
 make clean
 make qemu-nox
-´´´
+```
 
 ## Additional help used for project
 
