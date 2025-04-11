@@ -14,7 +14,7 @@ Simple program to reverse the contents of input stream or file with the ability 
 ## My-cat
 
 Simple alternative to UNIX cat command. Prints the contents of file(s) to stdout.
-Fiels are given as arguments, multiple allowed.
+Files are given as arguments, multiple allowed.
 
 **Usage**
 ```
